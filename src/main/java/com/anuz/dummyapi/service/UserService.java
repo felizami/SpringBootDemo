@@ -21,6 +21,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     
+//    @Autowired
+//    private UserDAO userDAO;
     
     public User saveUser(User user){
         Assert.notNull(user);
@@ -43,6 +45,12 @@ public class UserService {
         Assert.notNull(Id);
         userRepository.delete(Id);
     }
+    
+    
+//    
+//    public User userByEmail(String email){
+//        return userDAO.userByEmail(email);
+//    }
     
     
     

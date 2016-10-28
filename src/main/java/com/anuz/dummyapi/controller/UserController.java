@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -54,5 +53,16 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.ok(id);
     }
+    
+    
+    
+//    @RequestMapping(value = "byEmail", method = RequestMethod.GET)
+//    public User delete() {
+//        return userService.userByEmail("anuj.maharjan@gmail.com");
+//        
+//        
+//    }
+    
+    
 
 }
