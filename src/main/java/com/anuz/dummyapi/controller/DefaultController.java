@@ -5,6 +5,8 @@
  */
 package com.anuz.dummyapi.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,19 +22,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/")
 public class DefaultController {
 
-    @RequestMapping(value = "hello",method = RequestMethod.GET)
+    private static Logger logger = LogManager.getLogger();
+
+    @RequestMapping(value = "hello", method = RequestMethod.GET)
     public ResponseEntity index() {
         return ResponseEntity.ok("hello!, I'm feeling great");
     }
-    
-    @RequestMapping(value = "world",method = RequestMethod.GET)
-    public ModelMap index1(){
+
+    @RequestMapping(value = "world", method = RequestMethod.GET)
+    public ModelMap index1() {
         ModelMap map = new ModelMap();
         map.addAttribute("hello", "I'm feeling great");
         return map;
     }
-    
-     
-    
-    
+
+    @RequestMapping(value = "logTest", method = RequestMethod.GET)
+    public String logTest() {
+
+        logger.debug("This is a debug message");
+        logger.info("This is an info message");
+        logger.warn("This is a warn message");
+        logger.error("This is an error message");
+        logger.fatal("This is a fatal message");
+        
+        return "log test";
+    }
+
 }
