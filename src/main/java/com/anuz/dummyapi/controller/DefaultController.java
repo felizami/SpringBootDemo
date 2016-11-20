@@ -5,6 +5,7 @@
  */
 package com.anuz.dummyapi.controller;
 
+import com.anuz.dummyapi.util.SynchronizedDemo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,17 @@ public class DefaultController {
         
         return "log test";
     }
+    
+    
+    @RequestMapping(value = "raceCondition", method = RequestMethod.GET)
+    public int raceCondition() {
+        
+        return SynchronizedDemo.demo();
+//        return "log test";
+    }
+    
+    
+    
+    
 
 }

@@ -5,13 +5,21 @@
  */
 package com.anuz.dummyapi.dao;
 
-import com.anuz.dummyapi.entity.User;
+import java.util.List;
 
 /**
  *
  * @author anuz
+ * @param <T>
  */
-public interface UserDAO extends GenericDAO<User>{
-    
-    User userByEmail(String email);
+public interface GenericDAO<T> {
+
+    List<T> getAll();
+
+    T getById(int id);
+
+    int saveOrUpdate(T t);
+
+    int delete(int id);
+
 }

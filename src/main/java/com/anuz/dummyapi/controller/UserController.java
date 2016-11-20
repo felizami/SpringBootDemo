@@ -27,29 +27,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(value = "/api/v1/users")
 public class UserController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
+        private final Logger logger = LoggerFactory.getLogger(this.getClass());
+        @Autowired
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> allUsers() {
         logger.info("Retreive all Users");
         logger.debug("show this");
-        return userService.findAll();
+        return userService.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public User findOne(@PathVariable("id") Long id) {
-        return userService.findOne(id);
+    public User findOne(@PathVariable("id") int id) {
+        return userService.getById(id);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public User create(@RequestBody User user) {
-        return userService.saveUser(user);
+    public int create(@RequestBody User user) {
+        return userService.saveOrUpdate(user);
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("id") int id) {
         userService.delete(id);
         return ResponseEntity.ok(id);
     }
@@ -62,7 +62,7 @@ public class UserController {
 //        
 //        
 //    }
-    
+//    
     
 
 }

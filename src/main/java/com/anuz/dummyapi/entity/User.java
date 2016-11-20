@@ -6,6 +6,7 @@
 package com.anuz.dummyapi.entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,26 +18,30 @@ import javax.persistence.Table;
  * @author anuz
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User implements Serializable {
+
     @Id
+    @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
-    
+    private int userId;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email")
     private String email;
+    @Column(name = "address")
     private String address;
 
     public User() {
     }
 
-    public User(Long userId) {
+    public User(int userId) {
         this.userId = userId;
     }
 
-    
-    public User(Long userId, String firstName, String lastName, String email, String address) {
+    public User(int userId, String firstName, String lastName, String email, String address) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,11 +49,11 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public Long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
