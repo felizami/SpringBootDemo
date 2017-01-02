@@ -30,10 +30,10 @@ public class DefaultController {
         return ResponseEntity.ok("hello!, I'm feeling great");
     }
 
-    @RequestMapping(value = "world", method = RequestMethod.GET)
+    @RequestMapping(value = "click_me", method = RequestMethod.GET)
     public ModelMap index1() {
         ModelMap map = new ModelMap();
-        map.addAttribute("hello", "I'm feeling great");
+        map.addAttribute("clickMe", "I'm feeling great");
         return map;
     }
 

@@ -48,6 +48,10 @@ public class UserService {
     public User userByEmail(String email) {
         return userDAO.userByEmail(email);
     }
+    
+    public Boolean contentUpdateStatus(int userId){
+        return userDAO.getContentUpdateStatus(userId);
+    }
 
 //    public User saveUser(User user) {
 //        return userRepository.saveAndFlush(user);

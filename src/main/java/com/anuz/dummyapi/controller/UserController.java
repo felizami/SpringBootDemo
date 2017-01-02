@@ -6,6 +6,8 @@
 package com.anuz.dummyapi.controller;
 
 import com.anuz.dummyapi.entity.User;
+import com.anuz.dummyapi.service.ContentService;
+import com.anuz.dummyapi.service.UserContentService;
 import com.anuz.dummyapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,9 +30,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping(value = "/api/v1/users")
 public class UserController {
 
-        private final Logger logger = LoggerFactory.getLogger(this.getClass());
-        @Autowired
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
     private UserService userService;
+    @Autowired
+    private UserContentService userContentService;
+    @Autowired
+    private ContentService contentService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> allUsers() {
@@ -53,9 +60,30 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.ok(id);
     }
-    
-    
-    
+
+    @RequestMapping(value = "/content_status/{userId}", method = RequestMethod.GET)
+    public ModelMap contentUpdate(@PathVariable("userId") int userId) {
+
+        ModelMap map = new ModelMap();
+
+        map.addAttribute("status", userService.contentUpdateStatus(userId));
+        return map;
+
+    }
+
+    @RequestMapping(value = "/get_content_updates/{userId}", method = RequestMethod.GET)
+    public ModelMap getContentUpdates(@PathVariable("userId") int userId) {
+
+        ModelMap map = new ModelMap();
+        map.addAttribute("updates",contentService.getUpdates(userId) );
+       
+//        UserContent userContent=userContentService.getContentStatusById(userId);
+
+//        map.addAttribute("status", userService.contentUpdateStatus(userId));
+        return map;
+
+    }
+
 //    @RequestMapping(value = "byEmail", method = RequestMethod.GET)
 //    public User delete() {
 //        return userService.userByEmail("anuj.maharjan@gmail.com");
@@ -63,6 +91,4 @@ public class UserController {
 //        
 //    }
 //    
-    
-
 }

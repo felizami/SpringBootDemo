@@ -5,12 +5,12 @@
  */
 package com.anuz.dummyapi.dao.impl;
 
-import com.anuz.dummyapi.dao.UserDAO;
+import com.anuz.dummyapi.entity.UserContent;
+import java.util.List;
+import com.anuz.dummyapi.dao.UserContentDAO;
 import com.anuz.dummyapi.entity.Content;
 import com.anuz.dummyapi.entity.User;
-import com.anuz.dummyapi.entity.UserContent;
 import com.anuz.dummyapi.service.UserContentService;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,34 +22,31 @@ import org.springframework.stereotype.Repository;
  * @author anuz
  */
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class UserContentDAOImpl implements UserContentDAO {
 
     @Autowired
     SessionFactory sessionFactory;
 
-    @Autowired
-    UserContentService userContentService;
-
     @Override
-    public List<User> getAll() {
-        List<User> user;
+    public List getAll() {
+        List<UserContent> user;
         try (Session session = sessionFactory.openSession()) {
-            user = session.createQuery("SELECT u FROM User u").list();
+            user = session.createQuery("SELECT u FROM UserContent u").list();
         }
         return user;
     }
 
     @Override
-    public User getById(int id) {
-        User customerById;
+    public UserContent getById(int id) {
+        UserContent customerById;
         try (Session session = sessionFactory.openSession()) {
-            customerById = (User) session.get(User.class, id);
+            customerById = (UserContent) session.get(UserContent.class, id);
         }
         return customerById;
     }
 
     @Override
-    public int saveOrUpdate(User user) {
+    public int saveOrUpdate(UserContent user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
@@ -64,28 +61,21 @@ public class UserDAOImpl implements UserDAO {
     public int delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.delete((User) session.get(User.class, id));
+            session.delete((UserContent) session.get(UserContent.class, id));
             transaction.commit();
         }
         return 1;
     }
 
     @Override
-    public User userByEmail(String email) {
-        User user;
+    public UserContent getByUserId(int userId) {
+        UserContent userContent;
         try (Session session = sessionFactory.openSession()) {
-            user = (User) session.createQuery("SELECT u FROM User u WHERE u.email=:email").setParameter("email", email).uniqueResult();
+            userContent = (UserContent) session.createQuery("SELECT u FROM UserContent u where u.userId.userId=:userId").setParameter("userId", userId).uniqueResult();
         }
-        return user;
-    }
-
-    @Override
-    public Boolean getContentUpdateStatus(int userId) {
-
-        Session session = sessionFactory.openSession();
-        Boolean status = (Boolean) session.createQuery("Select uc.status from UserContent uc where uc.userId.userId=:userId").setParameter("userId", userId).uniqueResult();
-        return status;
+        return userContent;
     }
 
     
+
 }

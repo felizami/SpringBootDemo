@@ -6,12 +6,16 @@
 package com.anuz.dummyapi.entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -21,6 +25,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User implements Serializable {
 
+    
     @Id
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -93,4 +98,6 @@ public class User implements Serializable {
     public String toString() {
         return "User{" + "userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", address=" + address + '}';
     }
+
+     
 }

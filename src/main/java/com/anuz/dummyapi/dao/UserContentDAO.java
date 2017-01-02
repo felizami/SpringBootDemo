@@ -6,17 +6,18 @@
 package com.anuz.dummyapi.dao;
 
 import com.anuz.dummyapi.entity.Content;
-import com.anuz.dummyapi.entity.User;
+import com.anuz.dummyapi.entity.UserContent;
 import java.util.List;
 
 /**
  *
  * @author anuz
  */
-public interface UserDAO extends GenericDAO<User>{
-    
-    User userByEmail(String email);
-    Boolean getContentUpdateStatus(int userId);
+public interface UserContentDAO extends GenericDAO<UserContent>{
+    UserContent getByUserId(int userId);
    
-      
+    
+    
+    
+    
 }
