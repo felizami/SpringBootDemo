@@ -6,18 +6,18 @@
 package com.anuz.dummyapi.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,12 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "contents")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Content.findAll", query = "SELECT c FROM Content c"),
-    @NamedQuery(name = "Content.findByContentId", query = "SELECT c FROM Content c WHERE c.contentId = :contentId"),
-    @NamedQuery(name = "Content.findByTitle", query = "SELECT c FROM Content c WHERE c.title = :title"),
-    @NamedQuery(name = "Content.findByDescription", query = "SELECT c FROM Content c WHERE c.description = :description")})
 public class Content implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,6 +43,21 @@ public class Content implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "description")
     private String description;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "content_type")
+    private String contentType;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "content_location")
+    private String contentLocation;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "valid_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date validDate;
 
     public Content() {
     }
@@ -57,10 +66,13 @@ public class Content implements Serializable {
         this.contentId = contentId;
     }
 
-    public Content(Integer contentId, String title, String description) {
+    public Content(Integer contentId, String title, String description, String contentType, String contentLocation, Date validDate) {
         this.contentId = contentId;
         this.title = title;
         this.description = description;
+        this.contentType = contentType;
+        this.contentLocation = contentLocation;
+        this.validDate = validDate;
     }
 
     public Integer getContentId() {
@@ -86,6 +98,32 @@ public class Content implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getContentLocation() {
+        return contentLocation;
+    }
+
+    public void setContentLocation(String contentLocation) {
+        this.contentLocation = contentLocation;
+    }
+
+    public Date getValidDate() {
+        return validDate;
+    }
+
+    public void setValidDate(Date validDate) {
+        this.validDate = validDate;
+    }
+
+    
 
     @Override
     public int hashCode() {

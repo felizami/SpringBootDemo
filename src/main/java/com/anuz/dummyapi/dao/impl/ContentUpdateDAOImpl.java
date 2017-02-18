@@ -5,12 +5,9 @@
  */
 package com.anuz.dummyapi.dao.impl;
 
-import com.anuz.dummyapi.entity.UserContent;
+import com.anuz.dummyapi.dao.ContentUpdateDAO;
 import java.util.List;
-import com.anuz.dummyapi.dao.UserContentDAO;
-import com.anuz.dummyapi.entity.Content;
-import com.anuz.dummyapi.entity.User;
-import com.anuz.dummyapi.service.UserContentService;
+import com.anuz.dummyapi.entity.ContentUpdateStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,35 +19,35 @@ import org.springframework.stereotype.Repository;
  * @author anuz
  */
 @Repository
-public class UserContentDAOImpl implements UserContentDAO {
+public class ContentUpdateDAOImpl implements ContentUpdateDAO {
 
     @Autowired
     SessionFactory sessionFactory;
 
     @Override
     public List getAll() {
-        List<UserContent> user;
+        List<ContentUpdateStatus> contentUpdate;
         try (Session session = sessionFactory.openSession()) {
-            user = session.createQuery("SELECT u FROM UserContent u").list();
+            contentUpdate = session.createQuery("SELECT u FROM ContentUpdateStatus u").list();
         }
-        return user;
+        return contentUpdate;
     }
 
     @Override
-    public UserContent getById(int id) {
-        UserContent customerById;
+    public ContentUpdateStatus getById(int id) {
+        ContentUpdateStatus contentUpdate;
         try (Session session = sessionFactory.openSession()) {
-            customerById = (UserContent) session.get(UserContent.class, id);
+            contentUpdate = (ContentUpdateStatus) session.get(ContentUpdateStatus.class, id);
         }
-        return customerById;
+        return contentUpdate;
     }
 
     @Override
-    public int saveOrUpdate(UserContent user) {
+    public int saveOrUpdate(ContentUpdateStatus t) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            session.saveOrUpdate(user);
+            session.saveOrUpdate(t);
 
             transaction.commit();
         }
@@ -61,17 +58,17 @@ public class UserContentDAOImpl implements UserContentDAO {
     public int delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.delete((UserContent) session.get(UserContent.class, id));
+            session.delete((ContentUpdateStatus) session.get(ContentUpdateStatus.class, id));
             transaction.commit();
         }
         return 1;
     }
 
     @Override
-    public UserContent getByUserId(int userId) {
-        UserContent userContent;
+    public ContentUpdateStatus getByClientId(int clientId) {
+        ContentUpdateStatus userContent;
         try (Session session = sessionFactory.openSession()) {
-            userContent = (UserContent) session.createQuery("SELECT u FROM UserContent u where u.userId.userId=:userId").setParameter("userId", userId).uniqueResult();
+            userContent = (ContentUpdateStatus) session.createQuery("SELECT u FROM ContentUpdateStatus u where u.clientId.clientId=:clientId").setParameter("clientId", clientId).uniqueResult();
         }
         return userContent;
     }

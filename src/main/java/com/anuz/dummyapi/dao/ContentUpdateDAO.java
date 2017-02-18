@@ -5,13 +5,13 @@
  */
 package com.anuz.dummyapi.dao;
 
-import com.anuz.dummyapi.entity.Content;
-import java.util.List;
+import com.anuz.dummyapi.entity.ContentUpdateStatus;
 
 /**
  *
  * @author anuz
  */
-public interface ContentDAO extends GenericDAO<Content>{
-   
+public interface ContentUpdateDAO extends GenericDAO<ContentUpdateStatus>{
+    ContentUpdateStatus getByClientId(int clientId);
+    
 }

@@ -4,6 +4,9 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.anuz.dummyapi.entity.Content</class>
     <class>com.anuz.dummyapi.entity.UserContent</class>
+    <class>com.anuz.dummyapi.entity.ContentUpdateStatus</class>
+    <class>com.anuz.dummyapi.entity.Client</class>
+    <class>com.anuz.dummyapi.entity.Server</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dummyapi?zeroDateTimeBehavior=convertToNull"/>

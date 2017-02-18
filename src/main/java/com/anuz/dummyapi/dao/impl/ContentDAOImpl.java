@@ -7,8 +7,7 @@ package com.anuz.dummyapi.dao.impl;
 
 import com.anuz.dummyapi.dao.ContentDAO;
 import com.anuz.dummyapi.entity.Content;
-import com.anuz.dummyapi.entity.UserContent;
-import com.anuz.dummyapi.service.UserContentService;
+import com.anuz.dummyapi.service.ContentUpdateService;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,7 +26,7 @@ public class ContentDAOImpl implements ContentDAO {
     SessionFactory sessionFactory;
 
     @Autowired
-    UserContentService userContentService;
+    ContentUpdateService userContentService;
 
     @Override
     public List<Content> getAll() {
@@ -69,38 +68,5 @@ public class ContentDAOImpl implements ContentDAO {
         return 1;
     }
 
-    @Override
-    public Content getLastContent() {
-        Content userContent;
-        try (Session session = sessionFactory.openSession()) {
-            userContent = (Content) session.createQuery("SELECT c FROM Content c order by c.contentId DESC").setMaxResults(1).uniqueResult();
-
-        }
-        return userContent;
-
-    }
-
-    @Override
-    public List<Content> getUpdates(int userId) {
-
-        List<Content> contentUpdates = null;
-        Content content = getLastContent();
-        
-        UserContent currentUserContent = userContentService.getContentStatusById(userId);
-        int noOfNewUpdates = content.getContentId() - currentUserContent.getLastContentId();
-        if (noOfNewUpdates > 0) {
-            try (Session session = sessionFactory.openSession()) {
-                contentUpdates = session.createQuery("SELECT c FROM Content c order by c.contentId DESC").setMaxResults(noOfNewUpdates).list();
-
-            }
-
-        }
-        
-        currentUserContent.setLastContentId(content.getContentId());
-        userContentService.saveOrUpdate(currentUserContent);
-        
-        
-        return contentUpdates;
-    }
-
+   
 }

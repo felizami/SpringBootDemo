@@ -3,21 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.anuz.dummyapi.dao;
+package com.anuz.dummyapi.constants;
 
-import com.anuz.dummyapi.entity.Content;
-import com.anuz.dummyapi.entity.UserContent;
 import java.util.List;
 
 /**
  *
  * @author anuz
  */
-public interface UserContentDAO extends GenericDAO<UserContent>{
-    UserContent getByUserId(int userId);
-   
+public class CONSTANTS {
     
-    
-    
+    public static final String CONTENTS="/home/anuz/javaworkspace/DummyAPI/contents/";
     
 }

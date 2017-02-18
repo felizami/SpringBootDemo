@@ -7,7 +7,6 @@ package com.anuz.dummyapi.service;
 
 import com.anuz.dummyapi.dao.ContentDAO;
 import com.anuz.dummyapi.entity.Content;
-import com.anuz.dummyapi.entity.UserContent;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +35,7 @@ public class ContentService {
     public int delete(int id) {
         return contentDAO.delete(id);
     }
-    public Content getLastContent(){
-        return contentDAO.getLastContent();
-    }
-            
-    public List<Content> getUpdates(int userId){
-        return contentDAO.getUpdates(userId);
-    }
+    
     
     
 }
