@@ -6,7 +6,6 @@
 package com.anuz.dummyapi.dao;
 
 import com.anuz.dummyapi.entity.Content;
-import java.util.List;
 
 /**
  *

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -21,54 +23,54 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipUtil {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     List<String> fileList;
 
-    public  ZipUtil() {
+    public ZipUtil() {
         fileList = new ArrayList<>();
     }
 
-    
-    
-    
-    public String zipIt(String zipFileName){
-         byte[] buffer = new byte[1024];
+    public String zipIt(String zipFileName) {
+        byte[] buffer = new byte[1024];
 
-     try{
+        try {
 
-    	    FileOutputStream fos = new FileOutputStream(zipFileName);
-    	    ZipOutputStream zos = new ZipOutputStream(fos);
+            FileOutputStream fos = new FileOutputStream(zipFileName);
+            ZipOutputStream zos = new ZipOutputStream(fos);
 
-    	System.out.println("Output to Zip : " + zipFileName);
+            logger.info("Output to zip:" + zipFileName);
+//    	System.out.println("Output to Zip : " + zipFileName);
 
-    	for(String file : this.fileList){
+            for (String file : this.fileList) {
+                logger.info("File Added:" + file);
+//    		System.out.println("File Added : " + file);
+                ZipEntry ze = new ZipEntry(file);
+                zos.putNextEntry(ze);
 
-    		System.out.println("File Added : " + file);
-    		      ZipEntry ze= new ZipEntry(file);
-        	zos.putNextEntry(ze);
+                FileInputStream in = new FileInputStream(CONSTANTS.CONTENTS + File.separator + file);
 
-        	   FileInputStream in =new FileInputStream(CONSTANTS.CONTENTS + File.separator + file);
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
 
-        	int len;
-        	while ((len = in.read(buffer)) > 0) {
-        		zos.write(buffer, 0, len);
-        	}
+                in.close();
+            }
 
-        	in.close();
-    	}
+            zos.closeEntry();
+            //remember close it
+            zos.close();
+            logger.info("DONE");
+//    	System.out.println("Done");
 
-    	zos.closeEntry();
-    	//remember close it
-    	zos.close();
+        } catch (IOException ex) {
+            logger.error("Some error occoured while zipping files....");
+        }
 
-    	System.out.println("Done");
-    }catch(IOException ex){
-       ex.printStackTrace();
+        return zipFileName;
     }
-            
-     return zipFileName;
-    }
-    
-    
+
     public void generateFileList(File node) {
         if (node.isFile()) {
             fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));

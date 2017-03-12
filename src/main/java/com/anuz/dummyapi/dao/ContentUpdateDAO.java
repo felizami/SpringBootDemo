@@ -5,7 +5,9 @@
  */
 package com.anuz.dummyapi.dao;
 
+import com.anuz.dummyapi.entity.Content;
 import com.anuz.dummyapi.entity.ContentUpdateStatus;
+import java.util.List;
 
 /**
  *
@@ -13,5 +15,8 @@ import com.anuz.dummyapi.entity.ContentUpdateStatus;
  */
 public interface ContentUpdateDAO extends GenericDAO<ContentUpdateStatus>{
     ContentUpdateStatus getByClientId(int clientId);
+    
+    List<Content> getUnsynchronizedContentList(int clientId);
+    
     
 }

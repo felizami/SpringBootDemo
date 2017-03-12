@@ -6,6 +6,7 @@
 package com.anuz.dummyapi.service;
 
 import com.anuz.dummyapi.dao.ContentUpdateDAO;
+import com.anuz.dummyapi.entity.Content;
 import com.anuz.dummyapi.entity.ContentUpdateStatus;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class ContentUpdateService {
     
     public ContentUpdateStatus getContentStatusById(int clientId){
         return contentUpdateDAO.getByClientId(clientId);
+    }
+    public List<Content> getUnsynchronizedContentList(int clientId){
+        return contentUpdateDAO.getUnsynchronizedContentList(clientId);
     }
 
     

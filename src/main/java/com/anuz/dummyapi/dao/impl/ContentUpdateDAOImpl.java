@@ -6,6 +6,7 @@
 package com.anuz.dummyapi.dao.impl;
 
 import com.anuz.dummyapi.dao.ContentUpdateDAO;
+import com.anuz.dummyapi.entity.Content;
 import java.util.List;
 import com.anuz.dummyapi.entity.ContentUpdateStatus;
 import org.hibernate.Session;
@@ -71,6 +72,16 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
             userContent = (ContentUpdateStatus) session.createQuery("SELECT u FROM ContentUpdateStatus u where u.clientId.clientId=:clientId").setParameter("clientId", clientId).uniqueResult();
         }
         return userContent;
+    }
+
+    @Override
+    public List<Content> getUnsynchronizedContentList(int clientId) {
+     List<Content> contentIdList;
+        try (Session session = sessionFactory.openSession()) {
+            contentIdList = session.createQuery("SELECT c.contentId FROM ContentUpdateStatus c where c.clientId.clientId=:clientId and c.status=TRUE").setParameter("clientId", clientId).list();
+        }
+        return contentIdList;
+        
     }
 
     

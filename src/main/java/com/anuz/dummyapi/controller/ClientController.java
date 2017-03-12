@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.anuz.dummyapi.entity.Client;
+import com.anuz.dummyapi.entity.Content;
 import com.anuz.dummyapi.entity.ContentUpdateStatus;
 import com.anuz.dummyapi.util.ZipUtil;
 import java.io.File;
@@ -30,9 +31,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -77,52 +80,59 @@ public class ClientController {
         return ResponseEntity.ok(id);
     }
 
-    @RequestMapping(value = "udpate_content/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "update_content/{id}", method = RequestMethod.GET)
     public ModelMap updateContent(@PathVariable("id") int clientId) {
         ModelMap map = new ModelMap();
         ContentUpdateStatus contentUpdate = contentUpdateService.getContentStatusById(clientId);
-        map.addAttribute("contentUpdate", contentService.getById(contentUpdate.getContentId().getContentId()));
+        if (!contentUpdate.getStatus()) {
+            map.addAttribute("contentUpdate", contentService.getById(contentUpdate.getContentId().getContentId()));
+
+            contentUpdate.setStatus(true);
+            contentUpdateService.saveOrUpdate(contentUpdate);
+            logger.info("Client" + contentUpdate.getClientId() + " content Synchronized ");
+
+        }
+        System.out.println(contentService.getById(1));
         return map;
     }
-    
-    @RequestMapping(value = "/download_content_data/{id}",method = RequestMethod.GET,produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public FileSystemResource getFiles(@PathVariable("id")int id,HttpServletResponse response) throws FileNotFoundException{
-        
-        String fileName="content"+id+".zip";
+
+    @RequestMapping(value = "/download_content_data/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public FileSystemResource getFiles(@PathVariable("id") int id, HttpServletResponse response) throws FileNotFoundException {
+
+        String fileName = "content" + id + ".zip";
 //        
 //        byte[] buffer = new byte[1024];
 //        FileOutputStream fos = new FileOutputStream(CONSTANTS.CONTENTS+fileName);
 //        ZipOutputStream zos=new ZipOutputStream(fos);
 //        
 //        ZipEntry ze= new ZipEntry("spy.log");
-        
-        
-        
-       return new FileSystemResource(CONSTANTS.CONTENTS+fileName);       
+
+        return new FileSystemResource(CONSTANTS.CONTENTS + fileName);
     }
-    
-    
-    @RequestMapping(value="/contents_file/{id}",method = RequestMethod.GET)
-    public ResponseEntity<InputStreamResource> downloadFiles(@PathVariable("id") int id) throws IOException{
-        
-        String fileName="content"+id;
-        
-        ZipUtil zipFile=new ZipUtil();
-        zipFile.generateFileList(new File(CONSTANTS.CONTENTS+fileName));
-        
-        String finalZip=zipFile.zipIt(CONSTANTS.CONTENTS+fileName+".zip");
-        
-        
-        FileSystemResource file=new FileSystemResource(finalZip);
-        
-        
-            
-        
-        
-        
-        return ResponseEntity.ok().contentLength(file.contentLength())
-                    .contentType(MediaType.parseMediaType("application/octet_stream"))
-                .body(new InputStreamResource(file.getInputStream()));
+
+    @RequestMapping(value = "/contents_file/{id}", method = RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> downloadFiles(@PathVariable("id") int id) throws IOException {
+
+        List<Content> contentList = contentUpdateService.getUnsynchronizedContentList(id);
+//        logger.info("check");
+        if (!contentList.isEmpty()) {
+            String fileName = "zipFile" + new Date().getTime();
+            ZipUtil zipFile = new ZipUtil();
+            for (Content content : contentList) {
+                zipFile.generateFileList(new File(CONSTANTS.CONTENTS + content.getContentLocation()));
+            }
+            String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName + ".zip");
+            System.out.println("check filename");
+            System.out.println(finalZip);
+            FileSystemResource file = new FileSystemResource(finalZip);
+         
+            return ResponseEntity.ok().contentLength(file.contentLength())
+                    .contentType(MediaType.parseMediaType("application/zip"))
+                    .header("Content-Disposition", "attachment; filename=" + fileName)
+                    .body(new InputStreamResource(file.getInputStream()));
+
+        }
+        return ResponseEntity.ok().body(null);
         
     }
 
@@ -135,6 +145,17 @@ public class ClientController {
         return map;
 
     }
+
+    @RequestMapping(value = "/test/{userId}", method = RequestMethod.GET)
+    public ModelMap check(@PathVariable("userId") int userId) {
+
+        ModelMap map = new ModelMap();
+
+        map.addAttribute("test", contentUpdateService.getUnsynchronizedContentList(userId));
+        return map;
+
+    }
+
 //    @RequestMapping(value = "/get_content_updates/{userId}", method = RequestMethod.GET)
 //    public ModelMap getContentUpdates(@PathVariable("userId") int userId) {
 //
@@ -154,8 +175,4 @@ public class ClientController {
 //        
 //    }
 //    
-    
-    
-    
-    
 }

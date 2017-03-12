@@ -21,3 +21,15 @@
 [INFO ] 2017-01-03 22:06:45.052 DummyApiApplicationTests - Starting DummyApiApplicationTests on anuz-Inspiron-3420 with PID 4848 (started by anuz in /home/anuz/javaworkspace/DummyAPI)
 [INFO ] 2017-01-03 22:06:45.330 DummyApiApplicationTests - No active profile set, falling back to default profiles: default
 [INFO ] 2017-01-03 22:06:58.041 DummyApiApplicationTests - Started DummyApiApplicationTests in 14.502 seconds (JVM running for 18.328)
+[INFO ] 2017-03-04 09:23:24.408 DummyApiApplicationTests - Starting DummyApiApplicationTests on anuz-Inspiron-3420 with PID 5644 (started by anuz in /home/anuz/javaworkspace/DummyAPI)
+[INFO ] 2017-03-04 09:23:24.438 DummyApiApplicationTests - No active profile set, falling back to default profiles: default
+[INFO ] 2017-03-04 09:23:35.050 DummyApiApplicationTests - Started DummyApiApplicationTests in 11.45 seconds (JVM running for 13.682)
+[INFO ] 2017-03-04 09:29:19.664 DummyApiApplicationTests - Starting DummyApiApplicationTests on anuz-Inspiron-3420 with PID 5878 (started by anuz in /home/anuz/javaworkspace/DummyAPI)
+[INFO ] 2017-03-04 09:29:19.704 DummyApiApplicationTests - No active profile set, falling back to default profiles: default
+[INFO ] 2017-03-04 09:29:27.369 DummyApiApplicationTests - Started DummyApiApplicationTests in 8.197 seconds (JVM running for 9.666)
+[INFO ] 2017-03-09 08:55:57.898 DummyApiApplicationTests - Starting DummyApiApplicationTests on anuz-Inspiron-3420 with PID 6169 (started by anuz in /home/anuz/javaworkspace/DummyAPI)
+[INFO ] 2017-03-09 08:55:58.004 DummyApiApplicationTests - No active profile set, falling back to default profiles: default
+[INFO ] 2017-03-09 08:56:10.272 DummyApiApplicationTests - Started DummyApiApplicationTests in 14.899 seconds (JVM running for 18.854)
+[INFO ] 2017-03-11 08:25:46.204 DummyApiApplicationTests - Starting DummyApiApplicationTests on anuz-Inspiron-3420 with PID 4499 (started by anuz in /home/anuz/javaworkspace/DummyAPI)
+[INFO ] 2017-03-11 08:25:46.406 DummyApiApplicationTests - No active profile set, falling back to default profiles: default
+[INFO ] 2017-03-11 08:26:03.895 DummyApiApplicationTests - Started DummyApiApplicationTests in 20.053 seconds (JVM running for 25.906)
