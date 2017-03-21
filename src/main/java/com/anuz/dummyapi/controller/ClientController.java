@@ -116,12 +116,12 @@ public class ClientController {
         List<Content> contentList = contentUpdateService.getUnsynchronizedContentList(id);
 //        logger.info("check");
         if (!contentList.isEmpty()) {
-            String fileName = "zipFile" + new Date().getTime();
+            String fileName = "zipFile" + new Date().getTime()+".zip";
             ZipUtil zipFile = new ZipUtil();
             for (Content content : contentList) {
                 zipFile.generateFileList(new File(CONSTANTS.CONTENTS + content.getContentLocation()));
             }
-            String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName + ".zip");
+            String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName   );
             System.out.println("check filename");
             System.out.println(finalZip);
             FileSystemResource file = new FileSystemResource(finalZip);
