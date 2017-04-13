@@ -66,12 +66,12 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
     }
 
     @Override
-    public ContentUpdateStatus getByClientId(int clientId) {
-        ContentUpdateStatus userContent;
+    public List<ContentUpdateStatus> getByClientId(int clientId) {
+        List<ContentUpdateStatus> userContents;
         try (Session session = sessionFactory.openSession()) {
-            userContent = (ContentUpdateStatus) session.createQuery("SELECT u FROM ContentUpdateStatus u where u.clientId.clientId=:clientId").setParameter("clientId", clientId).uniqueResult();
+            userContents = session.createQuery("SELECT u FROM ContentUpdateStatus u where u.clientId.clientId=:clientId").setParameter("clientId", clientId).list();
         }
-        return userContent;
+        return userContents;
     }
 
     @Override
@@ -82,6 +82,17 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
         }
         return contentIdList;
         
+    }
+
+    @Override
+    public int updateContentStatus(int clientId,Boolean status) {
+        int result;
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            result=session.createQuery("Update ContentUpdateStatus c set c.status=:status where c.clientId.clientId=:clientId ").setBoolean("status",status).setParameter("clientId", clientId).executeUpdate();
+            transaction.commit();
+        }
+        return result;
     }
 
     

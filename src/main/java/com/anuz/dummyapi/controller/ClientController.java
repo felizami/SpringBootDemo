@@ -39,6 +39,7 @@ import javax.xml.ws.Response;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 /**
@@ -80,21 +81,24 @@ public class ClientController {
         return ResponseEntity.ok(id);
     }
 
-    @RequestMapping(value = "update_content/{id}", method = RequestMethod.GET)
-    public ModelMap updateContent(@PathVariable("id") int clientId) {
-        ModelMap map = new ModelMap();
-        ContentUpdateStatus contentUpdate = contentUpdateService.getContentStatusById(clientId);
-        if (!contentUpdate.getStatus()) {
-            map.addAttribute("contentUpdate", contentService.getById(contentUpdate.getContentId().getContentId()));
-
-            contentUpdate.setStatus(true);
-            contentUpdateService.saveOrUpdate(contentUpdate);
-            logger.info("Client" + contentUpdate.getClientId() + " content Synchronized ");
-
-        }
-        System.out.println(contentService.getById(1));
-        return map;
-    }
+    
+    
+    
+    
+//    @RequestMapping(value = "update_content/{id}", method = RequestMethod.GET)
+//    public ModelMap updateContent(@PathVariable("id") int clientId) {
+//        ModelMap map = new ModelMap();
+//        List<ContentUpdateStatus> contentUpdate = contentUpdateService.getByClientId(clientId);
+//        if (!contentUpdate.getStatus()) {
+//            map.addAttribute("contentUpdate", contentService.getById(contentUpdate.getContentId().getContentId()));
+//
+//            contentUpdate.setStatus(true);
+//            contentUpdateService.saveOrUpdate(contentUpdate);
+//            logger.info("Client" + contentUpdate.getClientId() + " content Synchronized ");
+//
+//        }
+//        return map;
+//    }
 
     @RequestMapping(value = "/download_content_data/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public FileSystemResource getFiles(@PathVariable("id") int id, HttpServletResponse response) throws FileNotFoundException {
@@ -121,10 +125,16 @@ public class ClientController {
             for (Content content : contentList) {
                 zipFile.generateFileList(new File(CONSTANTS.CONTENTS + content.getContentLocation()));
             }
-            String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName   );
-            System.out.println("check filename");
-            System.out.println(finalZip);
+            String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName);
+            
+//            if(finalZip!=null){
+//                contentUpdateService.updateContentStatus(id,Boolean.FALSE);
+//            }
             FileSystemResource file = new FileSystemResource(finalZip);
+            
+            
+            
+            
          
             return ResponseEntity.ok().contentLength(file.contentLength())
                     .contentType(MediaType.parseMediaType("application/zip"))
@@ -135,13 +145,21 @@ public class ClientController {
         return ResponseEntity.ok().body(null);
         
     }
+    
+    @RequestMapping(value="/{userId}/contents")
+    public ResponseEntity contentsByUserId(@PathVariable("userId") int userId){
+        
+        List<ContentUpdateStatus> contentsByuserId=contentUpdateService.getByClientId(userId);
+        
+        return new ResponseEntity(contentsByuserId, HttpStatus.OK);
+    }
 
-    @RequestMapping(value = "/content_status/{userId}", method = RequestMethod.GET)
-    public ModelMap contentUpdate(@PathVariable("userId") int userId) {
+    @RequestMapping(value = "/content_status/{clientId}", method = RequestMethod.GET)
+    public ModelMap contentUpdate(@PathVariable("clientId") int clientId) {
 
         ModelMap map = new ModelMap();
 
-        map.addAttribute("status", contentUpdateService.getContentStatusById(userId).getStatus());
+        map.addAttribute("contents", contentUpdateService.getByClientId(clientId));
         return map;
 
     }
@@ -162,7 +180,7 @@ public class ClientController {
 //        ModelMap map = new ModelMap();
 //        map.addAttribute("updates",contentService.getUpdates(userId) );
 //       
-////        UserContent userContent=userContentService.getContentStatusById(userId);
+////        UserContent userContent=userContentService.getByClientId(userId);
 //
 ////        map.addAttribute("status", userService.contentUpdateStatus(userId));
 //        return map;

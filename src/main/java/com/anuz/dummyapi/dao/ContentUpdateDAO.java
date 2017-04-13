@@ -14,9 +14,10 @@ import java.util.List;
  * @author anuz
  */
 public interface ContentUpdateDAO extends GenericDAO<ContentUpdateStatus>{
-    ContentUpdateStatus getByClientId(int clientId);
+    List<ContentUpdateStatus> getByClientId(int clientId);
     
     List<Content> getUnsynchronizedContentList(int clientId);
+    int updateContentStatus(int ClientId,Boolean status);
     
     
 }

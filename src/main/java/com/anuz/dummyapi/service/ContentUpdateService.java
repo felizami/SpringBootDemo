@@ -38,12 +38,19 @@ public class ContentUpdateService {
         return contentUpdateDAO.delete(id);
     }
     
-    public ContentUpdateStatus getContentStatusById(int clientId){
+    public List<ContentUpdateStatus> getByClientId(int clientId){
         return contentUpdateDAO.getByClientId(clientId);
     }
     public List<Content> getUnsynchronizedContentList(int clientId){
         return contentUpdateDAO.getUnsynchronizedContentList(clientId);
     }
+
+    public int updateContentStatus(int clientId,Boolean status){
+        return contentUpdateDAO.updateContentStatus(clientId, status);
+    }
+    
+    
+    
 
     
 }

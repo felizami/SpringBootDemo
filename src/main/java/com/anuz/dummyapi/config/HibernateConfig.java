@@ -23,57 +23,57 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 @Configuration
 public class HibernateConfig {
 
-    @Value("${jdbc.driverClassName}")
-    private String driverClassName;
-    @Value("${jdbc.url}")
-    private String url;
-    @Value("${jdbc.username}")
-    private String username;
-    @Value("${jdbc.password}")
-    private String password;
+        @Value("${jdbc.driverClassName}")
+        private String driverClassName;
+        @Value("${jdbc.url}")
+        private String url;
+        @Value("${jdbc.username}")
+        private String username;
+        @Value("${jdbc.password}")
+        private String password;
 
-    @Value("${hibernate.dialect}")
-    private String hibernateDialect;
-    @Value("${hibernate.show_sql}")
-    private String hibernateShowSql;
-    @Value("${hibernate.current_session_context_class}")
-    private String currentSessionContextClass;
+        @Value("${hibernate.dialect}")
+        private String hibernateDialect;
+        @Value("${hibernate.show_sql}")
+        private String hibernateShowSql;
+        @Value("${hibernate.current_session_context_class}")
+        private String currentSessionContextClass;
 
-    @Bean()
-    public DataSource getDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        return dataSource;
-    }
+        @Bean()
+        public DataSource getDataSource() {
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setDriverClassName(driverClassName);
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
+            return dataSource;
+        }
 
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager htm = new HibernateTransactionManager();
-        htm.setSessionFactory(sessionFactory);
-        return htm;
-    }
+        @Bean
+        @Autowired
+        public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+            HibernateTransactionManager htm = new HibernateTransactionManager();
+            htm.setSessionFactory(sessionFactory);
+            return htm;
+        }
 
-    @Bean
-    public LocalSessionFactoryBean getSessionFactory() {
-        LocalSessionFactoryBean localSessionfactoryBean = new LocalSessionFactoryBean();
-        localSessionfactoryBean.setDataSource(getDataSource());
-        localSessionfactoryBean.setHibernateProperties(getHibernateProperties());
-        localSessionfactoryBean.setPackagesToScan(new String[]{"com.anuz.dummyapi"});
-        return localSessionfactoryBean;
-    }
+        @Bean
+        public LocalSessionFactoryBean getSessionFactory() {
+            LocalSessionFactoryBean localSessionfactoryBean = new LocalSessionFactoryBean();
+            localSessionfactoryBean.setDataSource(getDataSource());
+            localSessionfactoryBean.setHibernateProperties(getHibernateProperties());
+            localSessionfactoryBean.setPackagesToScan(new String[]{"com.anuz.dummyapi"});
+            return localSessionfactoryBean;
+        }
 
-    @Bean
-    public Properties getHibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", hibernateDialect);
-        properties.put("hibernate.show_sql", hibernateShowSql);
-        properties.put("hibernate.current_session_context_class", currentSessionContextClass);
-        return properties;
-    }
+        @Bean
+        public Properties getHibernateProperties() {
+            Properties properties = new Properties();
+            properties.put("hibernate.dialect", hibernateDialect);
+            properties.put("hibernate.show_sql", hibernateShowSql);
+            properties.put("hibernate.current_session_context_class", currentSessionContextClass);
+            return properties;
+        }
     
      
 }
