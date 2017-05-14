@@ -19,5 +19,7 @@ public interface ContentUpdateDAO extends GenericDAO<ContentUpdateStatus>{
     List<Content> getUnsynchronizedContentList(int clientId);
     int updateContentStatus(int ClientId,Boolean status);
     
+    ContentUpdateStatus getLatestContentByClientId(int clientId);
+    
     
 }

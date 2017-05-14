@@ -95,6 +95,16 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
         return result;
     }
 
+    @Override
+    public ContentUpdateStatus getLatestContentByClientId(int clientId) {
+         List<ContentUpdateStatus> contentUpdate;
+        try (Session session = sessionFactory.openSession()) {
+            contentUpdate = session.createQuery("Select c from ContentUpdateStatus c where c.clientId.clientId=:clientId ORDER BY c.statusId DESC ").setParameter("clientId",clientId).setFirstResult(0).setMaxResults(1).list();
+        }
+        return contentUpdate.get(0);
+        
+    }
+
     
 
 }

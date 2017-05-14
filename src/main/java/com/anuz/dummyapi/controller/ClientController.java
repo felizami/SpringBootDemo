@@ -99,6 +99,9 @@ public class ClientController {
 //        }
 //        return map;
 //    }
+    
+    
+  
 
     @RequestMapping(value = "/download_content_data/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public FileSystemResource getFiles(@PathVariable("id") int id, HttpServletResponse response) throws FileNotFoundException {
@@ -126,20 +129,25 @@ public class ClientController {
                 zipFile.generateFileList(new File(CONSTANTS.CONTENTS + content.getContentLocation()));
             }
             String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName);
-            
+//            System.out.println(finalZip);
 //            if(finalZip!=null){
 //                contentUpdateService.updateContentStatus(id,Boolean.FALSE);
 //            }
-            FileSystemResource file = new FileSystemResource(finalZip);
             
+            FileSystemResource file = new FileSystemResource(finalZip);
             
             
             
          
             return ResponseEntity.ok().contentLength(file.contentLength())
-                    .contentType(MediaType.parseMediaType("application/zip"))
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
                     .header("Content-Disposition", "attachment; filename=" + fileName)
                     .body(new InputStreamResource(file.getInputStream()));
+            
+//            return ResponseEntity.ok().contentLength(file.contentLength())
+//                    .contentType(MediaType.parseMediaType("application/zip"))
+//                    .header("Content-Disposition", "attachment; filename=" + fileName)
+//                    .body(new InputStreamResource(file.getInputStream()));
 
         }
         return ResponseEntity.ok().body(null);
@@ -154,6 +162,14 @@ public class ClientController {
         return new ResponseEntity(contentsByuserId, HttpStatus.OK);
     }
 
+    
+    @RequestMapping(value = "/{userId}/latest",method = RequestMethod.GET)
+    public ResponseEntity contentChildUpdate(@PathVariable("userId") int userId){
+        ContentUpdateStatus update=contentUpdateService.getLatestContentByClientId(userId);
+        return new ResponseEntity(update,HttpStatus.OK);
+    }
+            
+            
     @RequestMapping(value = "/content_status/{clientId}", method = RequestMethod.GET)
     public ModelMap contentUpdate(@PathVariable("clientId") int clientId) {
 
