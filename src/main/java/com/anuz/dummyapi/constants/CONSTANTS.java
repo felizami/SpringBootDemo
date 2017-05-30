@@ -13,6 +13,6 @@ import java.util.List;
  */
 public class CONSTANTS {
     
-    public static final String CONTENTS="/home/anuz/javaworkspace/DummyAPI/contents/";
+    public static final String CONTENTS="/home/anuz/NetBeansProjects/SpringBootDemo/contents/";
     
 }

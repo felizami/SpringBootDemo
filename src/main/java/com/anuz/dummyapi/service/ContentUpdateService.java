@@ -50,8 +50,8 @@ public class ContentUpdateService {
     }
     
     
-     public ContentUpdateStatus getLatestContentByClientId(int clientId){
-         return contentUpdateDAO.getLatestContentByClientId(clientId);
+     public ContentUpdateStatus getLatestHTMLContentByClientId(int clientId){
+         return contentUpdateDAO.getLatestHTMLContentByClientId(clientId);
      }
     
     

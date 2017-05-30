@@ -121,11 +121,11 @@ public class ClientController {
     public ResponseEntity<InputStreamResource> downloadFiles(@PathVariable("id") int id) throws IOException {
 
         List<Content> contentList = contentUpdateService.getUnsynchronizedContentList(id);
-//        logger.info("check");
         if (!contentList.isEmpty()) {
             String fileName = "zipFile" + new Date().getTime()+".zip";
             ZipUtil zipFile = new ZipUtil();
             for (Content content : contentList) {
+                System.out.println(CONSTANTS.CONTENTS + content.getContentLocation());
                 zipFile.generateFileList(new File(CONSTANTS.CONTENTS + content.getContentLocation()));
             }
             String finalZip = zipFile.zipIt(CONSTANTS.CONTENTS + fileName);
@@ -139,15 +139,15 @@ public class ClientController {
             
             
          
-            return ResponseEntity.ok().contentLength(file.contentLength())
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-                    .header("Content-Disposition", "attachment; filename=" + fileName)
-                    .body(new InputStreamResource(file.getInputStream()));
-            
 //            return ResponseEntity.ok().contentLength(file.contentLength())
-//                    .contentType(MediaType.parseMediaType("application/zip"))
+//                    .contentType(MediaType.parseMediaType("application/octet-stream"))
 //                    .header("Content-Disposition", "attachment; filename=" + fileName)
 //                    .body(new InputStreamResource(file.getInputStream()));
+            
+            return ResponseEntity.ok().contentLength(file.contentLength())
+                    .contentType(MediaType.parseMediaType("application/zip"))
+                    .header("Content-Disposition", "attachment; filename=" + fileName)
+                    .body(new InputStreamResource(file.getInputStream()));
 
         }
         return ResponseEntity.ok().body(null);
@@ -163,9 +163,9 @@ public class ClientController {
     }
 
     
-    @RequestMapping(value = "/{userId}/latest",method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}/ht   ml/latest",method = RequestMethod.GET)
     public ResponseEntity contentChildUpdate(@PathVariable("userId") int userId){
-        ContentUpdateStatus update=contentUpdateService.getLatestContentByClientId(userId);
+        ContentUpdateStatus update=contentUpdateService.getLatestHTMLContentByClientId(userId);
         return new ResponseEntity(update,HttpStatus.OK);
     }
             

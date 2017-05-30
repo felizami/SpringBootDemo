@@ -9,6 +9,8 @@ import com.anuz.dummyapi.dao.ContentUpdateDAO;
 import com.anuz.dummyapi.entity.Content;
 import java.util.List;
 import com.anuz.dummyapi.entity.ContentUpdateStatus;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -78,8 +80,9 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
     public List<Content> getUnsynchronizedContentList(int clientId) {
      List<Content> contentIdList;
         try (Session session = sessionFactory.openSession()) {
-            contentIdList = session.createQuery("SELECT c.contentId FROM ContentUpdateStatus c where c.clientId.clientId=:clientId and c.status=TRUE").setParameter("clientId", clientId).list();
+            contentIdList = session.createQuery("SELECT c.contentId FROM ContentUpdateStatus c where c.clientId.clientId=:clientId AND c.contentId.contentType='WAR' and c.status=TRUE").setParameter("clientId", clientId).list();
         }
+         
         return contentIdList;
         
     }
@@ -96,12 +99,16 @@ public class ContentUpdateDAOImpl implements ContentUpdateDAO {
     }
 
     @Override
-    public ContentUpdateStatus getLatestContentByClientId(int clientId) {
+    public ContentUpdateStatus getLatestHTMLContentByClientId(int clientId) {
          List<ContentUpdateStatus> contentUpdate;
         try (Session session = sessionFactory.openSession()) {
-            contentUpdate = session.createQuery("Select c from ContentUpdateStatus c where c.clientId.clientId=:clientId ORDER BY c.statusId DESC ").setParameter("clientId",clientId).setFirstResult(0).setMaxResults(1).list();
+            contentUpdate = session.createQuery("Select c from ContentUpdateStatus c where c.clientId.clientId=:clientId and c.contentId.contentType='HTML' AND c.status=TRUE ORDER BY c.statusId DESC ").setParameter("clientId",clientId).setFirstResult(0).setMaxResults(1).list();
         }
+        if(contentUpdate.size()>0)
         return contentUpdate.get(0);
+        
+        
+        return null;
         
     }
 
